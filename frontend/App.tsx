@@ -6,7 +6,7 @@ import {
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Image, LogBox} from 'react-native';
+import {Button, Image, LogBox, TouchableOpacity} from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CryptoAuth from './Components/CryptoAuth';
@@ -32,9 +32,12 @@ import {
   faShoppingBag,
   faMagic,
   faIcons,
+  faChevronRight,
+  faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {LinearGradient} from 'react-native-svg';
+import Maps from './Components/Maps/Maps';
 
 LogBox.ignoreAllLogs();
 
@@ -48,7 +51,7 @@ function Home(): JSX.Element {
         tabBarInactiveTintColor: '#444',
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#BEA7E5',
+          backgroundColor: '#ff8c3d',
           marginBottom: 35,
           marginHorizontal: 25,
           borderRadius: 50,
@@ -58,6 +61,19 @@ function Home(): JSX.Element {
           left: 0,
           bottom: 0,
           right: 0,
+          borderColor: '#de4b28',
+          borderTopColor: '#de4b28',
+          borderBottomColor: '#de4b28',
+          borderRightColor: '#e65b2d',
+          borderEndColor: '#e65b2d',
+          borderStartColor: '#de4b28',
+          borderLeftColor: '#F00',
+
+          borderBottomWidth: 4,
+          borderRightWidth: 4,
+          borderEndWidth: 4,
+          borderStartWidth: 1,
+          borderTopWidth: 0,
         },
       }}>
       <Tab.Screen
@@ -85,7 +101,7 @@ function Home(): JSX.Element {
             return <FontAwesomeIcon icon={faTrophy} color={color} size={20} />;
           },
         }}
-        component={NFTAssets}
+        component={Maps}
       />
       <Tab.Screen
         name="Market"
@@ -111,6 +127,9 @@ function Home(): JSX.Element {
   );
 }
 
+function Home2(): JSX.Element {
+  return <></>;
+}
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 function getHeaderTitle(route) {
@@ -132,15 +151,15 @@ function getHeaderTitle(route) {
 }
 
 function App(): JSX.Element {
-  const connector = useWalletConnect();
-  const {
-    authenticate,
-    authError,
-    isAuthenticating,
-    isAuthenticated,
-    logout,
-    Moralis,
-  } = useMoralis();
+  // const connector = useWalletConnect();
+  // const {
+  //   authenticate,
+  //   authError,
+  //   isAuthenticating,
+  //   isAuthenticated,
+  //   logout,
+  //   Moralis,
+  // } = useMoralis();
 
   return (
     <NavigationContainer>
@@ -156,10 +175,47 @@ function App(): JSX.Element {
           name="DrawerNavigationRoutes"
           component={Home}
           // Hiding header for Navigation Drawer
-          options={{
+          options={({navigation, route}) => ({
+            headerTintColor: '#ff8c3d',
+            title: '',
+            headerLeft: () => <Header navigation={navigation} />,
+            headerStyle: {elevation: 0, backgroundColor: 'transparent'},
+          })}
+          // options={({ route }) => ({
+          //   headerTitle: getHeaderTitle(route),
+          // })}
+        />
+        <Stack.Screen
+          name="Map"
+          component={Maps}
+          // Hiding header for Navigation Drawer
+          options={({navigation, route}) => ({
             headerTitle: props => <Header />,
-            headerStyle: {elevation: 0, backgroundColor: '#EEE'},
-          }}
+            headerShown: false,
+            headerStyle: {elevation: 0, backgroundColor: 'transparent'},
+          })}
+          // options={({ route }) => ({
+          //   headerTitle: getHeaderTitle(route),
+          // })}
+        />
+        <Stack.Screen
+          name="profile"
+          component={Profile}
+          // Hiding header for Navigation Drawer
+          options={({navigation, route}) => ({
+            headerTitle: () => (
+              <TouchableOpacity
+                onPress={() => navigation.replace('DrawerNavigationRoutes')}
+                className="bg-[#ff8c3d] rounded-full   p-2  mt-6 mb-3   border-[#ff8c3d] border-r-4 border-b-4 border-r-[#e65b2d]  border-b-[#de4b28] align-middle items-center">
+                <FontAwesomeIcon
+                  style={{color: '#fff'}}
+                  icon={faChevronLeft}
+                  size={16}
+                />
+              </TouchableOpacity>
+            ),
+            headerStyle: {elevation: 0, backgroundColor: 'transparent'},
+          })}
           // options={({ route }) => ({
           //   headerTitle: getHeaderTitle(route),
           // })}
