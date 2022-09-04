@@ -243,7 +243,7 @@ const Activity = ({navigation}) => {
                   running ? stop() : start();
                   startStreaming();
                 }}
-                className="bg-[#BEA7E5] rounded-full   px-8  py-2   border-[#BEA7E5] border-r-4 border-b-4 border-r-[#9f87c9]  border-b-[#8c73b6] align-middle items-center  ">
+                className="bg-brand rounded-full   px-8  py-2   border-[#BEA7E5] border-r-4 border-b-4 border-r-[#9f87c9]  border-b-[#8c73b6] align-middle items-center  ">
                 <Text className="font-bold text-xl italic text-white">
                   {!streaming ? 'Start' : 'Stop'}{' '}
                 </Text>

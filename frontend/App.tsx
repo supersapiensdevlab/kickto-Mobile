@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useMoralis} from 'react-moralis';
 import {useWalletConnect} from './WalletConnect';
 import {
@@ -38,6 +38,10 @@ import {
 
 import {LinearGradient} from 'react-native-svg';
 import Maps from './Components/Maps/Maps';
+import Login from './Components/Authentication/Login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfileEdit from './Components/Profile/ProfileEdit';
+import Name from './Components/Profile/Name';
 
 LogBox.ignoreAllLogs();
 
@@ -150,29 +154,35 @@ function getHeaderTitle(route) {
   }
 }
 
-function App(): JSX.Element {
-  // const connector = useWalletConnect();
-  // const {
-  //   authenticate,
-  //   authError,
-  //   isAuthenticating,
-  //   isAuthenticated,
-  //   logout,
-  //   Moralis,
-  // } = useMoralis();
-
+const App = () => {
+  const [userDetails, setUserDetails] = useState<string>();
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@email');
+      if (value !== null) {
+        // value previously stored
+        setUserDetails(value);
+        console.log('Welcome ', value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="DrawerNavigationRoutes">
-        {/* Auth Navigator: Include Login and Signup */}
-        {/* <Stack.Screen
-          name="Auth"
-          component={CryptoAuth}
+      <Stack.Navigator
+        initialRouteName={userDetails?.length > 1 ? 'Homescreen' : 'Login'}>
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{headerShown: false}}
-        /> */}
+        />
         {/* Navigation Drawer as a landing page */}
         <Stack.Screen
-          name="DrawerNavigationRoutes"
+          name="Homescreen"
           component={Home}
           // Hiding header for Navigation Drawer
           options={({navigation, route}) => ({
@@ -205,7 +215,7 @@ function App(): JSX.Element {
           options={({navigation, route}) => ({
             headerTitle: () => (
               <TouchableOpacity
-                onPress={() => navigation.replace('DrawerNavigationRoutes')}
+                onPress={() => navigation.replace('Homescreen')}
                 className="bg-[#ff8c3d] rounded-full   p-2  mt-6 mb-3   border-[#ff8c3d] border-r-4 border-b-4 border-r-[#e65b2d]  border-b-[#de4b28] align-middle items-center">
                 <FontAwesomeIcon
                   style={{color: '#fff'}}
@@ -220,9 +230,49 @@ function App(): JSX.Element {
           //   headerTitle: getHeaderTitle(route),
           // })}
         />
+
+        <Stack.Screen
+          name="profileEdit"
+          component={ProfileEdit}
+          // Hiding header for Navigation Drawer
+          options={({navigation, route}) => ({
+            headerTitle: () => (
+              <TouchableOpacity
+                onPress={() => navigation.replace('profile')}
+                className="bg-[#ff8c3d] rounded-full   p-2  mt-6 mb-3   border-[#ff8c3d] border-r-4 border-b-4 border-r-[#e65b2d]  border-b-[#de4b28] align-middle items-center">
+                <FontAwesomeIcon
+                  style={{color: '#fff'}}
+                  icon={faChevronLeft}
+                  size={16}
+                />
+              </TouchableOpacity>
+            ),
+            headerStyle: {elevation: 0, backgroundColor: 'transparent'},
+          })}
+        />
+
+        <Stack.Screen
+          name="Name"
+          component={Name}
+          // Hiding header for Navigation Drawer
+          options={({navigation, route}) => ({
+            headerTitle: () => (
+              <TouchableOpacity
+                onPress={() => navigation.replace('profileEdit')}
+                className="bg-[#ff8c3d] rounded-full   p-2  mt-6 mb-3   border-[#ff8c3d] border-r-4 border-b-4 border-r-[#e65b2d]  border-b-[#de4b28] align-middle items-center">
+                <FontAwesomeIcon
+                  style={{color: '#fff'}}
+                  icon={faChevronLeft}
+                  size={16}
+                />
+              </TouchableOpacity>
+            ),
+            headerStyle: {elevation: 0, backgroundColor: 'transparent'},
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default App;

@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface EthereumRNBoilerplateTests : XCTestCase
+@interface KicktoTests : XCTestCase
 
 @end
 
-@implementation EthereumRNBoilerplateTests
+@implementation KicktoTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

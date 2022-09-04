@@ -5,7 +5,7 @@ platform :ios, '11.0'
 
 pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
-target 'EthereumRNBoilerplate' do
+target 'Kickto' do
   config = use_native_modules!
 
   use_react_native!(
@@ -16,7 +16,7 @@ target 'EthereumRNBoilerplate' do
 
   pod 'RNSensors', :path => '../node_modules/react-native-sensors'
 
-  target 'EthereumRNBoilerplateTests' do
+  target 'KicktoTests' do
     inherit! :complete
     # Pods for testing
   end
